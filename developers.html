@@ -43,6 +43,12 @@
         </section>
 
         <section>
+            <h2>Base URL</h2>
+<pre><code>https://users.pdf-insights.ai</code></pre>
+            <p>All API requests are sent to this base endpoint using HTTPS.</p>
+        </section>
+
+        <section>
             <h2>Try it in 30 seconds</h2>
             <p>
                 Once you have an account and API key, upload a PDF and send a chat request.
@@ -63,6 +69,24 @@
     "model": "gpt-4o-mini",
     "persona": "You are a senior refrigeration engineer."
   }'</code></pre>
+        </section>
+
+        <section>
+            <h2>Example Response</h2>
+<pre><code>{
+  "answer": "The likely diagnosis is a cooling system or airflow issue that should be checked against the service guidance in the uploaded manual.",
+  "usage": {
+    "prompt_tokens": 9948,
+    "completion_tokens": 299
+  },
+  "status": "ok",
+  "model_used": "gpt-4o-mini",
+  "cost": {
+    "cost_usd": 0.00167,
+    "charged_usd": 0.00501,
+    "wallet_balance_usd": 24.10
+  }
+}</code></pre>
         </section>
 
         <section>
@@ -125,11 +149,29 @@ print(result["answer"])</code></pre>
         </section>
 
         <section>
+            <h2>Use Cases</h2>
+            <ul>
+                <li>Industrial troubleshooting and technical manuals</li>
+                <li>Compliance and regulatory documentation</li>
+                <li>Legal and precedent-based document analysis</li>
+                <li>Training and internal knowledge assistants</li>
+                <li>Engineering reviews and service documentation</li>
+            </ul>
+        </section>
+
+        <section>
             <h2>Pricing</h2>
             <p>
-                Developer access is planned as a monthly subscription plus usage.
+                Developer access will be available through subscription tiers with usage-based billing.
                 Enterprise options will also be available.
             </p>
+        </section>
+
+        <section>
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://github.com/rnborland/pdf-insights-docs">Documentation Source</a></li>
+            </ul>
         </section>
 
         <section>
