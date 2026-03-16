@@ -14,23 +14,55 @@
 
     <main>
         <section>
-            <h2>Why PDF-Insights?</h2>
-            <ul>
-                <li><strong>Persona-aware responses:</strong> Frame answers as an engineer, inspector, analyst, or rules official.</li>
-                <li><strong>Document-grounded answers:</strong> Query PDFs without building your own RAG stack from scratch.</li>
-                <li><strong>Usage and cost feedback:</strong> Receive answer, usage, and billing details in one flow.</li>
-            </ul>
+            <p><strong>Built for developers:</strong> simple HTTP endpoints, fast onboarding, and document-grounded answers shaped by custom personas.</p>
+            <div class="button-row">
+                <a class="button" href="https://users.pdf-insights.ai/ui/">Get API Key / Register</a>
+                <a class="button secondary" href="#quick-start">View Quick Start</a>
+            </div>
         </section>
 
         <section>
+            <h2>Why PDF-Insights?</h2>
+            <ul>
+                <li><strong>Persona-aware responses:</strong> Frame answers as an engineer, inspector, analyst, tutor, or rules official.</li>
+                <li><strong>Document-grounded answers:</strong> Query uploaded PDFs without building your own RAG stack from scratch.</li>
+                <li><strong>Usage and cost feedback:</strong> Receive answer, token usage, and billing details in one flow.</li>
+                <li><strong>Fast integration path:</strong> Upload a PDF, ask a question, choose a model, and guide the answer with a persona.</li>
+            </ul>
+        </section>
+
+        <section id="quick-start">
             <h2>Quick Start</h2>
             <ol>
                 <li>Create an account</li>
                 <li>Generate an API key</li>
                 <li>Upload a PDF</li>
-                <li>Send a chat request with model and persona</li>
-                <li>Receive an answer</li>
+                <li>Send a chat request with a model and persona</li>
+                <li>Receive an answer, usage details, and cost feedback</li>
             </ol>
+        </section>
+
+        <section>
+            <h2>Try it in 30 seconds</h2>
+            <p>
+                Once you have an account and API key, upload a PDF and send a chat request.
+                This is the core workflow external developers will use.
+            </p>
+
+<pre><code>curl -X POST https://users.pdf-insights.ai/pdf/upload \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@manual.pdf"</code></pre>
+
+<pre><code>curl -X POST https://users.pdf-insights.ai/chat \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "session_id": "demo-session",
+    "pdf_id": "YOUR_PDF_ID",
+    "message": "What is the likely diagnosis?",
+    "model": "gpt-4o-mini",
+    "persona": "You are a senior refrigeration engineer."
+  }'</code></pre>
         </section>
 
         <section>
@@ -63,6 +95,18 @@ print(result["answer"])</code></pre>
         </section>
 
         <section>
+            <h2>Authentication</h2>
+            <p>Use bearer token authentication with your API key.</p>
+<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+            <p>
+                To use the API, create an account or sign in to generate your key.
+            </p>
+            <div class="button-row">
+                <a class="button" href="https://users.pdf-insights.ai/ui/">Get API Key / Register</a>
+            </div>
+        </section>
+
+        <section>
             <h2>Core Endpoints</h2>
             <ul>
                 <li><code>POST /pdf/upload</code> — Upload and vectorize a PDF</li>
@@ -72,11 +116,11 @@ print(result["answer"])</code></pre>
         </section>
 
         <section>
-            <h2>Authentication</h2>
-            <p>Use bearer token authentication with your API key.</p>
-<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+            <h2>What makes the API different?</h2>
             <p>
-                API keys are generated from your PDF-Insights account dashboard.
+                Most document APIs focus only on retrieval. PDF-Insights lets you shape the answer
+                using a custom persona, so the same source document can be interpreted through the lens
+                of a refrigeration engineer, safety inspector, legal reviewer, tutor, or rules official.
             </p>
         </section>
 
@@ -88,9 +132,16 @@ print(result["answer"])</code></pre>
             </p>
         </section>
 
-        <section class="button-row">
-            <a class="button" href="https://users.pdf-insights.ai/ui/">Get API Key / Register</a>
-            <a class="button secondary" href="index.html">Back to Docs Home</a>
+        <section>
+            <h2>Get an API Key</h2>
+            <p>
+                To use the PDF-Insights API you need an account and API key.
+                Create an account or sign in to generate your key.
+            </p>
+            <div class="button-row">
+                <a class="button" href="https://users.pdf-insights.ai/ui/">Get API Key / Register</a>
+                <a class="button secondary" href="index.html">Back to Docs Home</a>
+            </div>
         </section>
     </main>
 
