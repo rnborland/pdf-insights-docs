@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF-Insights Developer API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>PDF-Insights Developer API</h1>
+        <p>Add persona-aware document reasoning to your applications in minutes.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Why PDF-Insights?</h2>
+            <ul>
+                <li><strong>Persona-aware responses:</strong> Frame answers as an engineer, inspector, analyst, or rules official.</li>
+                <li><strong>Document-grounded answers:</strong> Query PDFs without building your own RAG stack from scratch.</li>
+                <li><strong>Usage and cost feedback:</strong> Receive answer, usage, and billing details in one flow.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Quick Start</h2>
+            <ol>
+                <li>Create an account</li>
+                <li>Generate an API key</li>
+                <li>Upload a PDF</li>
+                <li>Send a chat request with model and persona</li>
+                <li>Receive an answer</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Python Example</h2>
+<pre><code>import requests
+
+API_KEY = "YOUR_API_KEY"
+BASE_URL = "https://users.pdf-insights.ai"
+
+with open("manual.pdf", "rb") as f:
+    upload = requests.post(
+        f"{BASE_URL}/pdf/upload",
+        headers={"Authorization": f"Bearer {API_KEY}"},
+        files={"file": f}
+    ).json()
+
+result = requests.post(
+    f"{BASE_URL}/chat",
+    headers={"Authorization": f"Bearer {API_KEY}"},
+    json={
+        "session_id": "demo-session",
+        "pdf_id": upload["pdf_id"],
+        "message": "What is the likely diagnosis?",
+        "model": "gpt-4o-mini",
+        "persona": "You are a senior refrigeration engineer."
+    }
+).json()
+
+print(result["answer"])</code></pre>
+        </section>
+
+        <section>
+            <h2>Core Endpoints</h2>
+            <ul>
+                <li><code>POST /pdf/upload</code> — Upload and vectorize a PDF</li>
+                <li><code>POST /chat</code> — Ask a question using a model and persona</li>
+                <li><code>GET /pdf/get/{pdf_id}</code> — Retrieve a stored PDF</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Authentication</h2>
+            <p>Use bearer token authentication with your API key.</p>
+<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+            <p>
+                API keys are generated from your PDF-Insights account dashboard.
+            </p>
+        </section>
+
+        <section>
+            <h2>Pricing</h2>
+            <p>
+                Developer access is planned as a monthly subscription plus usage.
+                Enterprise options will also be available.
+            </p>
+        </section>
+
+        <section class="button-row">
+            <a class="button" href="https://users.pdf-insights.ai/ui/">Sign In / Register</a>
+            <a class="button secondary" href="index.html">Back to Docs Home</a>
+        </section>
+    </main>
+
+    <footer>
+        PDF-Insights.ai Developer API
+    </footer>
+</body>
+</html>
