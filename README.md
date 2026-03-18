@@ -54,11 +54,11 @@ Go to:
 
 https://users.pdf-insights.ai/ui/
 
-Then click:
+Create an account (username, email, and password), then click:
 
 Build with API
 
-Notes:
+### Notes
 
 - API keys begin with `pdi_live_`
 - The key is shown once only
