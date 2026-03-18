@@ -1,52 +1,70 @@
-<main class="content">
-  <section class="hero">
-    <h1>Developer API</h1>
-    <p class="subtitle">
-      Turn any PDF into a programmable AI assistant.
-    </p>
-    <p>
-      Upload a document, ask questions, apply a custom system prompt, and get structured responses with cost tracking.
-    </p>
-  </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF-Insights Developer API</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="content">
+    <section class="hero">
+      <h1>Developer API</h1>
+      <p class="subtitle">
+        Turn any PDF into a programmable AI assistant.
+      </p>
+      <p>
+        Upload a document, ask questions, apply a custom system prompt, and get structured responses with cost tracking.
+      </p>
 
-  <section>
-    <h2>Who This Is For</h2>
-    <p>
-      This API is intended for developers who want to integrate PDF-Insights into their own applications, tools, or workflows.
-    </p>
-    <p>
-      Typical use cases include document assistants, internal knowledge tools, industrial manuals, compliance workflows, and training applications.
-    </p>
-  </section>
+      <div class="hero-actions">
+        <a class="button-link" href="https://users.pdf-insights.ai/ui/" target="_blank" rel="noopener noreferrer">
+          Open PDF-Insights App
+        </a>
+        <a class="button-link secondary" href="https://github.com/rnborland/pdf-insights-docs" target="_blank" rel="noopener noreferrer">
+          View GitHub Docs
+        </a>
+      </div>
+    </section>
 
-  <section>
-    <h2>Getting Started</h2>
-    <ol>
-      <li>Create an account using a username, email, and password.</li>
-      <li>Log in and select <strong>Developer API (Get API Key)</strong>.</li>
-      <li>Generate and securely store your API key.</li>
-      <li>Upload a PDF and save the returned <code>pdf_id</code>.</li>
-      <li>Send questions to the <code>/chat</code> endpoint.</li>
-    </ol>
-  </section>
+    <section>
+      <h2>Who This Is For</h2>
+      <p>
+        This API is intended for developers who want to integrate PDF-Insights into their own applications, tools, or workflows.
+      </p>
+      <p>
+        Typical use cases include document assistants, internal knowledge tools, industrial manuals, compliance workflows, and training applications.
+      </p>
+    </section>
 
-  <section>
-    <h2>Authentication</h2>
-    <p>
-      API requests use Bearer authentication.
-    </p>
-    <pre><code>Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
-    <p>
-      API keys begin with <code>pdi_live_</code> and the raw key is shown once only, so store it securely.
-    </p>
-  </section>
+    <section>
+      <h2>Getting Started</h2>
+      <ol>
+        <li>Create an account using a username, email, and password.</li>
+        <li>Log in and select <strong>Developer API (Get API Key)</strong>.</li>
+        <li>Generate and securely store your API key.</li>
+        <li>Upload a PDF and save the returned <code>pdf_id</code>.</li>
+        <li>Send questions to the <code>/chat</code> endpoint.</li>
+      </ol>
+    </section>
 
-  <section>
-    <h2>Quick Start Example</h2>
-    <p>
-      The example below shows the complete flow: upload a PDF, then ask a question about it.
-    </p>
-    <pre><code>import requests
+    <section>
+      <h2>Authentication</h2>
+      <p>
+        API requests use Bearer authentication.
+      </p>
+      <pre><code>Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
+      <p>
+        API keys begin with <code>pdi_live_</code> and the raw key is shown once only, so store it securely.
+      </p>
+    </section>
+
+    <section>
+      <h2>Quick Start Example</h2>
+      <p>
+        The example below shows the complete flow: upload a PDF, then ask a question about it.
+      </p>
+      <pre><code>import requests
 
 API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 BASE_URL = "https://users.pdf-insights.ai"
@@ -84,29 +102,32 @@ data = chat_resp.json()
 
 print(data["answer"])
 print(data["cost"])</code></pre>
-  </section>
+    </section>
 
-  <section>
-    <h2>Core Endpoints</h2>
+    <section>
+      <h2>Core Endpoints</h2>
 
-    <h3><code>POST /pdf/upload</code></h3>
-    <p>Upload a PDF using multipart form data.</p>
-    <pre><code>{
+      <h3><code>POST /pdf/upload</code></h3>
+      <p>Upload a PDF using multipart form data.</p>
+      <p><strong>Response:</strong></p>
+      <pre><code>{
   "pdf_id": "your-pdf-id"
 }</code></pre>
 
-    <h3><code>POST /chat</code></h3>
-    <p>Ask a question about a previously uploaded PDF.</p>
-    <pre><code>{
+      <h3><code>POST /chat</code></h3>
+      <p>Ask a question about a previously uploaded PDF.</p>
+      <p><strong>Request body:</strong></p>
+      <pre><code>{
   "pdf_id": "your-pdf-id",
   "question": "Summarize this document",
   "system_prompt": "You are a helpful assistant"
 }</code></pre>
-  </section>
+    </section>
 
-  <section>
-    <h2>Example Response</h2>
-    <pre><code>{
+    <section>
+      <h2>Example Response</h2>
+      <p><strong>Developer response:</strong></p>
+      <pre><code>{
   "answer": "Document summary here...",
   "status": "ok",
   "model_used": "gpt-4o-mini",
@@ -116,47 +137,49 @@ print(data["cost"])</code></pre>
     "wallet_balance_usd": 4.9979
   }
 }</code></pre>
-  </section>
+    </section>
 
-  <section>
-    <h2>Why system_prompt Matters</h2>
-    <p>
-      One of the key differentiators of PDF-Insights is that the same PDF can behave like different assistants depending on the system prompt you provide.
-    </p>
-    <p>
-      Examples:
-    </p>
-    <ul>
-      <li><code>You are a refrigeration engineer diagnosing failures.</code></li>
-      <li><code>You are a compliance auditor reviewing this document.</code></li>
-      <li><code>You are a safety trainer explaining this clearly.</code></li>
-    </ul>
-    <p>
-      This makes the API more than simple PDF search. It turns a document into a programmable assistant.
-    </p>
-  </section>
+    <section>
+      <h2>Why <code>system_prompt</code> Matters</h2>
+      <p>
+        One of the key differentiators of PDF-Insights is that the same PDF can behave like different assistants depending on the system prompt you provide.
+      </p>
+      <p>
+        Examples:
+      </p>
+      <ul>
+        <li><code>You are a refrigeration engineer diagnosing failures.</code></li>
+        <li><code>You are a compliance auditor reviewing this document.</code></li>
+        <li><code>You are a safety trainer explaining this clearly.</code></li>
+      </ul>
+      <p>
+        This makes the API more than simple PDF search. It turns a document into a programmable assistant.
+      </p>
+    </section>
 
-  <section>
-    <h2>GitHub Example and Docs</h2>
-    <p>
-      For the latest examples and developer-facing documentation, visit the GitHub repository:
-    </p>
-    <p>
-      <a href="https://github.com/rnborland/pdf-insights-docs" target="_blank" rel="noopener noreferrer">
-        rnborland/pdf-insights-docs
-      </a>
-    </p>
-  </section>
+    <section>
+      <h2>GitHub Example and Docs</h2>
+      <p>
+        For the latest examples and developer-facing documentation, visit the GitHub repository:
+      </p>
+      <p>
+        <a href="https://github.com/rnborland/pdf-insights-docs" target="_blank" rel="noopener noreferrer">
+          rnborland/pdf-insights-docs
+        </a>
+      </p>
+    </section>
 
-  <section>
-    <h2>Current Status</h2>
-    <ul>
-      <li>API key creation working</li>
-      <li>API key listing working</li>
-      <li>API key revoke working</li>
-      <li>PDF upload working</li>
-      <li>Chat endpoint working</li>
-      <li>Developer response format stable</li>
-    </ul>
-  </section>
-</main>
+    <section>
+      <h2>Current Working Features</h2>
+      <ul>
+        <li>API key creation working</li>
+        <li>API key listing working</li>
+        <li>API key revoke working</li>
+        <li>PDF upload working</li>
+        <li>Chat endpoint working</li>
+        <li>Developer response format stable</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
