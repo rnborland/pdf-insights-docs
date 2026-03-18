@@ -21,7 +21,9 @@ headers = {
     "Authorization": f"Bearer {API_KEY}"
 }
 
-# Upload PDF
+# -------------------------------
+# 1. Upload PDF
+# -------------------------------
 with open("example.pdf", "rb") as f:
     upload_resp = requests.post(
         f"{BASE_URL}/pdf/upload",
@@ -30,22 +32,38 @@ with open("example.pdf", "rb") as f:
     )
 
 upload_resp.raise_for_status()
-pdf_id = upload_resp.json()["pdf_id"]
+upload_data = upload_resp.json()
 
-# Ask a question
+pdf_id = upload_data["pdf_id"]
+print("Uploaded PDF ID:", pdf_id)
+
+# -------------------------------
+# 2. Send chat request
+# -------------------------------
+payload = {
+    "session_id": str(uuid.uuid4()),
+    "pdf_id": pdf_id,
+    "message": "Summarize this document",
+    "system_prompt": "You are a helpful assistant"
+}
+
 chat_resp = requests.post(
     f"{BASE_URL}/chat",
     headers=headers,
-    json={
-        "session_id": str(uuid.uuid4()),
-        "pdf_id": pdf_id,
-        "message": "Summarize this document",
-        "system_prompt": "You are a helpful assistant"
-    }
+    json=payload
 )
 
 chat_resp.raise_for_status()
-print(chat_resp.json()["answer"])
+data = chat_resp.json()
+
+# -------------------------------
+# 3. Output
+# -------------------------------
+print("\nANSWER:\n")
+print(data["answer"])
+
+print("\nCOST:\n")
+print(data.get("cost"))
 ```
 
 ---
@@ -143,9 +161,9 @@ Response:
 
 ### Notes on `/chat`
 
-- Use `message` for the user prompt
-- Include a `session_id` with each request
-- A new `session_id` can be generated for a new conversation
+- Use `message` for the user prompt  
+- Include a `session_id` with each request  
+- A new `session_id` can be generated for a new conversation  
 
 ---
 
