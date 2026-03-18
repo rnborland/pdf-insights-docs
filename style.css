@@ -1,86 +1,263 @@
+/* =========================================================
+   PDF-Insights Docs Site Styles
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
     margin: 0;
     padding: 0;
-    background: #f7f9fc;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    color: #1f2937;
+    background-color: #f7f9fc;
+}
+
+/* =========================================================
+   Layout
+   ========================================================= */
+
+.container,
+.content,
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 56px 20px;
+}
+
+section {
+    background: #ffffff;
+    margin-bottom: 24px;
+    padding: 28px 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+/* =========================================================
+   Hero / header areas
+   ========================================================= */
+
+.hero {
+    text-align: left;
+    padding-top: 8px;
+}
+
+.hero h1,
+h1 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: #111827;
+}
+
+.subtitle {
+    font-size: 1.15rem;
+    color: #374151;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+/* =========================================================
+   Headings
+   ========================================================= */
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.45rem;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
     color: #1f2937;
 }
 
-header {
-    background: #0f172a;
-    color: white;
-    padding: 2rem 1.5rem;
-    text-align: center;
-}
-
-main {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 3rem 1.5rem;
-}
-
-h1, h2, h3 {
+p {
     margin-top: 0;
+    margin-bottom: 14px;
 }
 
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-    margin-top: 2rem;
+ul,
+ol {
+    margin-top: 0;
+    margin-bottom: 14px;
+    padding-left: 24px;
 }
 
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+li {
+    margin-bottom: 8px;
 }
 
-.button-row {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-}
+/* =========================================================
+   Links
+   ========================================================= */
 
-.button {
-    display: inline-block;
-    background: #2563eb;
-    color: white;
+a {
+    color: #0f62fe;
     text-decoration: none;
-    padding: 0.75rem 1.1rem;
-    border-radius: 8px;
-    font-weight: bold;
 }
 
-.button.secondary {
-    background: #475569;
+a:hover {
+    text-decoration: underline;
 }
 
-code, pre {
-    background: #0f172a;
-    color: #e5e7eb;
-    border-radius: 8px;
-}
+/* =========================================================
+   Inline code and code blocks
+   ========================================================= */
 
 code {
-    padding: 0.15rem 0.35rem;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.95rem;
+    background: #f3f4f6;
+    color: #111827;
+    padding: 2px 6px;
+    border-radius: 6px;
 }
 
 pre {
-    padding: 1rem;
+    margin: 16px 0;
+    padding: 16px;
     overflow-x: auto;
+    background: #111827;
+    color: #f9fafb;
+    border-radius: 10px;
+    border: 1px solid #1f2937;
 }
 
-ul, ol {
-    padding-left: 1.25rem;
-}
-
-footer {
-    text-align: center;
-    padding: 1.5rem;
-    color: #64748b;
+pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
     font-size: 0.95rem;
+    line-height: 1.5;
+    white-space: pre;
+}
+
+/* =========================================================
+   Utility elements
+   ========================================================= */
+
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 24px 0;
+}
+
+strong {
+    color: #111827;
+}
+
+blockquote {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-left: 4px solid #0f62fe;
+    background: #f8fbff;
+    color: #374151;
+}
+
+/* =========================================================
+   Optional top nav if used
+   ========================================================= */
+
+.navbar {
+    background: #111827;
+    color: #ffffff;
+    padding: 14px 20px;
+}
+
+.navbar .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbar a {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   Button-style links if needed
+   ========================================================= */
+
+.button-link {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #0f62fe;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.button-link:hover {
+    background: #0b53d0;
+    text-decoration: none;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
+.footer {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px 36px 20px;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 768px) {
+    body {
+        font-size: 15px;
+    }
+
+    .container,
+    .content,
+    main {
+        padding: 20px 14px 40px 14px;
+    }
+
+    section {
+        padding: 20px 16px;
+        border-radius: 10px;
+    }
+
+    .hero h1,
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    pre {
+        padding: 14px;
+    }
 }
