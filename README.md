@@ -1,27 +1,26 @@
-Get an API Key
+# PDF-Insights Developer API
 
-👉 https://users.pdf-insights.ai/ui/
+Turn any PDF into a programmable AI assistant.
 
-Click:
+Upload a document, ask questions, control behavior with system prompts, and get structured answers.
 
-Build with API
+---
 
-Authentication
-Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-Core Workflow
+## Quick Start
 
-Create API key
+### Python Example
 
-Upload PDF
+```python
+import requests
 
-Store pdf_id
+API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+BASE_URL = "https://users.pdf-insights.ai"
 
-Query with /chat
+headers = {
+    "Authorization": f"Bearer {API_KEY}"
+}
 
-Use system_prompt to specialize behavior
-
-Endpoints
-POST /pdf/upload
+# Upload PDF
 with open("example.pdf", "rb") as f:
     upload_resp = requests.post(
         f"{BASE_URL}/pdf/upload",
@@ -29,23 +28,104 @@ with open("example.pdf", "rb") as f:
         files={"file": ("example.pdf", f, "application/pdf")}
     )
 
-Response
+upload_resp.raise_for_status()
+pdf_id = upload_resp.json()["pdf_id"]
 
+# Ask a question
+chat_resp = requests.post(
+    f"{BASE_URL}/chat",
+    headers=headers,
+    json={
+        "pdf_id": pdf_id,
+        "question": "Summarize this document",
+        "system_prompt": "You are a helpful assistant"
+    }
+)
+
+chat_resp.raise_for_status()
+print(chat_resp.json()["answer"])
+```
+
+---
+
+## Get an API Key
+
+Go to:
+
+https://users.pdf-insights.ai/ui/
+
+Then click:
+
+Build with API
+
+Notes:
+
+- API keys begin with `pdi_live_`
+- The key is shown once only
+- Store it securely
+
+---
+
+## Authentication
+
+Use your API key as a Bearer token:
+
+```
+Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+---
+
+## Workflow
+
+1. Create API key  
+2. Upload PDF  
+3. Save `pdf_id`  
+4. Ask questions via `/chat`  
+5. Optionally use `system_prompt`  
+
+---
+
+## Endpoints
+
+### POST /pdf/upload
+
+Upload a PDF:
+
+```python
+with open("example.pdf", "rb") as f:
+    requests.post(
+        f"{BASE_URL}/pdf/upload",
+        headers=headers,
+        files={"file": ("example.pdf", f, "application/pdf")}
+    )
+```
+
+Response:
+
+```json
 {
   "pdf_id": "your-pdf-id"
 }
-POST /chat
+```
 
-Request
+---
 
+### POST /chat
+
+Request:
+
+```json
 {
   "pdf_id": "your-pdf-id",
-  "question": "Summarize this document.",
-  "system_prompt": "You are a concise technical assistant."
+  "question": "Summarize this document",
+  "system_prompt": "You are a helpful assistant"
 }
+```
 
-Response
+Response:
 
+```json
 {
   "answer": "...",
   "status": "ok",
@@ -56,79 +136,55 @@ Response
     "wallet_balance_usd": 4.9979
   }
 }
-system_prompt = Your Superpower
+```
 
-Turn the same PDF into different assistants:
+---
 
-"You are a refrigeration engineer diagnosing failures."
-"You are a compliance auditor."
-"You are a pirate refrigeration engineer."
-cURL Example
-Upload
+## system_prompt
+
+Use `system_prompt` to control behavior:
+
+- "You are a refrigeration engineer diagnosing failures."
+- "You are a compliance auditor."
+- "You are a pirate refrigeration engineer."
+
+The PDF becomes a programmable assistant.
+
+---
+
+## cURL Example
+
+Upload:
+
+```bash
 curl -X POST "https://users.pdf-insights.ai/pdf/upload" \
   -H "Authorization: Bearer pdi_live_xxx" \
   -F "file=@example.pdf;type=application/pdf"
-Chat
+```
+
+Chat:
+
+```bash
 curl -X POST "https://users.pdf-insights.ai/chat" \
   -H "Authorization: Bearer pdi_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{
     "pdf_id": "your-pdf-id",
     "question": "Summarize this document",
-    "system_prompt": "You are a concise assistant"
+    "system_prompt": "You are a helpful assistant"
   }'
-Minimal Example File
-import os
-import requests
+```
 
-API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-BASE_URL = "https://users.pdf-insights.ai"
+---
 
-headers = {
-    "Authorization": f"Bearer {API_KEY}"
-}
+## Status
 
+- API keys working  
+- Upload working  
+- Chat working  
 
-def upload_pdf(file_path):
-    filename = os.path.basename(file_path)
+---
 
-    with open(file_path, "rb") as f:
-        resp = requests.post(
-            f"{BASE_URL}/pdf/upload",
-            headers=headers,
-            files={"file": (filename, f, "application/pdf")}
-        )
+## Key Idea
 
-    resp.raise_for_status()
-    return resp.json()["pdf_id"]
-
-
-def ask_question(pdf_id, question, system_prompt=None):
-    payload = {
-        "pdf_id": pdf_id,
-        "question": question
-    }
-
-    if system_prompt:
-        payload["system_prompt"] = system_prompt
-
-    resp = requests.post(
-        f"{BASE_URL}/chat",
-        headers=headers,
-        json=payload
-    )
-
-    resp.raise_for_status()
-    return resp.json()
-
-
-if __name__ == "__main__":
-    pdf_id = upload_pdf("example.pdf")
-
-    response = ask_question(
-        pdf_id,
-        "Summarize the document.",
-        system_prompt="You are a helpful assistant."
-    )
-
-    print(response["answer"])
+Turn any PDF into a programmable AI assistant.
