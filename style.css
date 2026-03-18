@@ -261,3 +261,13 @@ blockquote {
         padding: 14px;
     }
 }
+
+
+.doc-image {
+    width: 100%;
+    max-width: 720px;
+    margin: 16px auto 24px auto;
+    display: block;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
