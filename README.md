@@ -2,7 +2,7 @@
 
 Turn any PDF into a programmable AI assistant.
 
-Upload a document, ask questions, control behavior with system prompts, and get structured answers.
+Upload a document, send chat-style prompts, control behavior with system prompts, and get structured answers.
 
 ---
 
@@ -12,6 +12,7 @@ Upload a document, ask questions, control behavior with system prompts, and get 
 
 ```python
 import requests
+import uuid
 
 API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 BASE_URL = "https://users.pdf-insights.ai"
@@ -36,8 +37,9 @@ chat_resp = requests.post(
     f"{BASE_URL}/chat",
     headers=headers,
     json={
+        "session_id": str(uuid.uuid4()),
         "pdf_id": pdf_id,
-        "question": "Summarize this document",
+        "message": "Summarize this document",
         "system_prompt": "You are a helpful assistant"
     }
 )
@@ -81,7 +83,7 @@ Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 1. Create API key  
 2. Upload PDF  
 3. Save `pdf_id`  
-4. Ask questions via `/chat`  
+4. Send a chat request to `/chat`  
 5. Optionally use `system_prompt`  
 
 ---
@@ -117,8 +119,9 @@ Request:
 
 ```json
 {
+  "session_id": "your-session-id",
   "pdf_id": "your-pdf-id",
-  "question": "Summarize this document",
+  "message": "Summarize this document",
   "system_prompt": "You are a helpful assistant"
 }
 ```
@@ -137,6 +140,12 @@ Response:
   }
 }
 ```
+
+### Notes on `/chat`
+
+- Use `message` for the user prompt
+- Include a `session_id` with each request
+- A new `session_id` can be generated for a new conversation
 
 ---
 
@@ -169,8 +178,9 @@ curl -X POST "https://users.pdf-insights.ai/chat" \
   -H "Authorization: Bearer pdi_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{
+    "session_id": "123e4567-e89b-12d3-a456-426614174000",
     "pdf_id": "your-pdf-id",
-    "question": "Summarize this document",
+    "message": "Summarize this document",
     "system_prompt": "You are a helpful assistant"
   }'
 ```
