@@ -14,7 +14,7 @@
         Turn any PDF into a programmable AI assistant.
       </p>
       <p>
-        Upload a document, ask questions, apply a custom system prompt, and get structured responses with cost tracking.
+        Upload a document, send chat-style prompts, apply a custom system prompt, and get structured responses with cost tracking.
       </p>
 
       <div class="hero-actions">
@@ -44,7 +44,7 @@
         <li>Log in and select <strong>Developer API (Get API Key)</strong>.</li>
         <li>Generate and securely store your API key.</li>
         <li>Upload a PDF and save the returned <code>pdf_id</code>.</li>
-        <li>Send questions to the <code>/chat</code> endpoint.</li>
+        <li>Send a chat request to the <code>/chat</code> endpoint.</li>
       </ol>
     </section>
 
@@ -62,9 +62,10 @@
     <section>
       <h2>Quick Start Example</h2>
       <p>
-        The example below shows the complete flow: upload a PDF, then ask a question about it.
+        The example below shows the complete flow: upload a PDF, then send a chat request about it.
       </p>
       <pre><code>import requests
+import uuid
 
 API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 BASE_URL = "https://users.pdf-insights.ai"
@@ -86,13 +87,14 @@ pdf_id = upload_resp.json()["pdf_id"]
 
 print("Uploaded PDF ID:", pdf_id)
 
-# 2. Ask a question
+# 2. Send a chat request
 chat_resp = requests.post(
     f"{BASE_URL}/chat",
     headers=headers,
     json={
+        "session_id": str(uuid.uuid4()),
         "pdf_id": pdf_id,
-        "question": "Summarize this document",
+        "message": "Summarize this document",
         "system_prompt": "You are a helpful assistant"
     }
 )
@@ -115,13 +117,18 @@ print(data["cost"])</code></pre>
 }</code></pre>
 
       <h3><code>POST /chat</code></h3>
-      <p>Ask a question about a previously uploaded PDF.</p>
+      <p>Send a chat-style request about a previously uploaded PDF.</p>
       <p><strong>Request body:</strong></p>
       <pre><code>{
+  "session_id": "your-session-id",
   "pdf_id": "your-pdf-id",
-  "question": "Summarize this document",
+  "message": "Summarize this document",
   "system_prompt": "You are a helpful assistant"
 }</code></pre>
+
+      <p>
+        Each chat request should include a <code>session_id</code> and a <code>message</code>. A new session ID can be generated for a new conversation.
+      </p>
     </section>
 
     <section>
