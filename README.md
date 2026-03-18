@@ -58,7 +58,7 @@ https://users.pdf-insights.ai/ui/
 
 Create an account (username, email, and password), then click:
 
-**Create API Key**
+**Developer API (Get API Key)**
 
 ### Notes
 
