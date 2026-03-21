@@ -1,48 +1,145 @@
-# PDF-Insights Developer API
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF-Insights Developer API</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="content">
+    <section class="hero">
+      <h1>Developer API</h1>
+      <p class="subtitle">
+        Turn any PDF into a programmable AI assistant.
+      </p>
+      <p>
+        Upload a document, send chat-style prompts, control behavior with system prompts, and get structured answers.
+      </p>
+    </section>
 
-Turn any PDF into a programmable AI assistant.
+    <section>
+      <h2>Try It Free (No Risk)</h2>
+      <p>
+        Every account includes a <strong>$1 free wallet credit</strong>.
+      </p>
+      <ul>
+        <li>No credit card required</li>
+        <li>Full API access available</li>
+        <li>Test real queries immediately</li>
+      </ul>
+      <p>
+        Build and test your integration before spending anything.
+      </p>
+    </section>
 
-Upload a document, send chat-style prompts, control behavior with system prompts, and get structured answers.
+    <section>
+      <h2>Plans and Feature Access</h2>
 
----
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th>Budget</th>
+            <th>Standard</th>
+            <th>Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Trial wallet credit</td>
+            <td>$1</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>API access</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Storage limit</td>
+            <td>50 MB</td>
+            <td>100 MB</td>
+            <td>250 MB</td>
+            <td>1 GB</td>
+          </tr>
+          <tr>
+            <td>Max PDFs</td>
+            <td>2</td>
+            <td>10</td>
+            <td>20</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>Voice features</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Custom <code>system_prompt</code> / personality</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Agents</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Allowed models</td>
+            <td><code>gpt-4o-mini</code></td>
+            <td><code>gpt-4o-mini</code></td>
+            <td><code>gpt-4o-mini</code>, <code>gpt-4o</code></td>
+            <td><code>gpt-4o-mini</code>, <code>gpt-4o</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-## Try It Free (No Risk)
+      <p>
+        <strong>Important:</strong> If a custom <code>system_prompt</code> is provided on <strong>Free or Budget</strong> plans,
+        it will be ignored and replaced with the default assistant behavior.
+      </p>
+    </section>
 
-Every account includes a **$1 free wallet credit**.
+    <section>
+      <h2>Get an API Key</h2>
+      <p>
+        Go to:
+      </p>
+      <p>
+        <a href="https://users.pdf-insights.ai/ui/" target="_blank" rel="noopener noreferrer">
+          https://users.pdf-insights.ai/ui/
+        </a>
+      </p>
+      <p>
+        Create an account (username, email, and password), then click:
+      </p>
+      <p>
+        <strong>Developer API (Get API Key)</strong>
+      </p>
+      <ul>
+        <li>API keys begin with <code>pdi_live_</code></li>
+        <li>The key is shown once only</li>
+        <li>Store it securely</li>
+      </ul>
+    </section>
 
-- No credit card required  
-- Full API access available  
-- Test real queries immediately  
+    <section>
+      <h2>Quick Start</h2>
 
-Build and test your integration before spending anything.
-
----
-
-## Plans and Feature Access
-
-| Feature | Free | Budget | Standard | Pro |
-|---|---|---|---|---|
-| Trial wallet credit | $1 | — | — | — |
-| API access | Yes | Yes | Yes | Yes |
-| Storage limit | 50 MB | 100 MB | 250 MB | 1 GB |
-| Max PDFs | 2 | 10 | 20 | 100 |
-| Voice features | No | No | Yes | Yes |
-| Custom `system_prompt` / personality | No | No | Yes | Yes |
-| Agents | No | No | Yes | Yes |
-| Allowed models | `gpt-4o-mini` | `gpt-4o-mini` | `gpt-4o-mini`, `gpt-4o` | `gpt-4o-mini`, `gpt-4o` |
-
-### Important
-
-If a custom `system_prompt` is provided on **Free or Budget plans**, it will be ignored and replaced with the default assistant behavior.
-
----
-
-## Quick Start
-
-### Python Example
-
-```python
-import requests
+      <h3>Python Example</h3>
+      <pre><code>import requests
 import uuid
 
 API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -75,4 +172,144 @@ payload = {
     "session_id": str(uuid.uuid4()),
     "pdf_id": pdf_id,
     "message": "Summarize this document",
+    "system_prompt": "You are a helpful assistant"
+}
+
+chat_resp = requests.post(
+    f"{BASE_URL}/chat",
+    headers=headers,
+    json=payload
+)
+
+chat_resp.raise_for_status()
+data = chat_resp.json()
+
+# -------------------------------
+# 3. Output
+# -------------------------------
+print("\nANSWER:\n")
+print(data["answer"])
+
+print("\nCOST:\n")
+print(data.get("cost"))</code></pre>
+    </section>
+
+    <section>
+      <h2>Authentication</h2>
+      <p>
+        Use your API key as a Bearer token:
+      </p>
+      <pre><code>Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
+    </section>
+
+    <section>
+      <h2>Workflow</h2>
+      <ol>
+        <li>Create API key</li>
+        <li>Upload PDF</li>
+        <li>Save <code>pdf_id</code></li>
+        <li>Send a chat request to <code>/chat</code></li>
+        <li>Optionally use <code>system_prompt</code></li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Endpoints</h2>
+
+      <h3><code>POST /pdf/upload</code></h3>
+      <p>Upload a PDF:</p>
+      <pre><code>with open("example.pdf", "rb") as f:
+    requests.post(
+        f"{BASE_URL}/pdf/upload",
+        headers=headers,
+        files={"file": ("example.pdf", f, "application/pdf")}
+    )</code></pre>
+
+      <p><strong>Response:</strong></p>
+      <pre><code>{
+  "pdf_id": "your-pdf-id"
+}</code></pre>
+
+      <h3><code>POST /chat</code></h3>
+      <p><strong>Request:</strong></p>
+      <pre><code>{
+  "session_id": "your-session-id",
+  "pdf_id": "your-pdf-id",
+  "message": "Summarize this document",
+  "system_prompt": "You are a helpful assistant"
+}</code></pre>
+
+      <p><strong>Response:</strong></p>
+      <pre><code>{
+  "answer": "...",
+  "status": "ok",
+  "model_used": "gpt-4o-mini",
+  "system_prompt_used": "...",
+  "cost": {
+    "charged_usd": 0.0021,
+    "wallet_balance_usd": 4.9979
+  }
+}</code></pre>
+
+      <p><strong>Notes on <code>/chat</code>:</strong></p>
+      <ul>
+        <li>Use <code>message</code> for the user prompt</li>
+        <li>Include a <code>session_id</code> with each request</li>
+        <li>A new <code>session_id</code> can be generated for a new conversation</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><code>system_prompt</code></h2>
+      <p>
+        Use <code>system_prompt</code> to control behavior:
+      </p>
+      <ul>
+        <li><code>You are a refrigeration engineer diagnosing failures.</code></li>
+        <li><code>You are a compliance auditor.</code></li>
+        <li><code>You are a pirate refrigeration engineer.</code></li>
+      </ul>
+      <p>
+        The PDF becomes a programmable assistant.
+      </p>
+    </section>
+
+    <section>
+      <h2>cURL Example</h2>
+
+      <p><strong>Upload:</strong></p>
+      <pre><code>curl -X POST "https://users.pdf-insights.ai/pdf/upload" \
+  -H "Authorization: Bearer pdi_live_xxx" \
+  -F "file=@example.pdf;type=application/pdf"</code></pre>
+
+      <p><strong>Chat:</strong></p>
+      <pre><code>curl -X POST "https://users.pdf-insights.ai/chat" \
+  -H "Authorization: Bearer pdi_live_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "session_id": "123e4567-e89b-12d3-a456-426614174000",
+    "pdf_id": "your-pdf-id",
+    "message": "Summarize this document",
+    "system_prompt": "You are a helpful assistant"
+  }'</code></pre>
+    </section>
+
+    <section>
+      <h2>Status</h2>
+      <ul>
+        <li>API keys working</li>
+        <li>Upload working</li>
+        <li>Chat working</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Key Idea</h2>
+      <p>
+        Turn any PDF into a programmable AI assistant.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
    
