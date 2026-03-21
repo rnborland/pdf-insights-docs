@@ -6,6 +6,37 @@ Upload a document, send chat-style prompts, control behavior with system prompts
 
 ---
 
+## Try It Free (No Risk)
+
+Every account includes a **$1 free wallet credit**.
+
+- No credit card required  
+- Full API access available  
+- Test real queries immediately  
+
+Build and test your integration before spending anything.
+
+---
+
+## Plans and Feature Access
+
+| Feature | Free | Budget | Standard | Pro |
+|---|---|---|---|---|
+| Trial wallet credit | $1 | — | — | — |
+| API access | Yes | Yes | Yes | Yes |
+| Storage limit | 50 MB | 100 MB | 250 MB | 1 GB |
+| Max PDFs | 2 | 10 | 20 | 100 |
+| Voice features | No | No | Yes | Yes |
+| Custom `system_prompt` / personality | No | No | Yes | Yes |
+| Agents | No | No | Yes | Yes |
+| Allowed models | `gpt-4o-mini` | `gpt-4o-mini` | `gpt-4o-mini`, `gpt-4o` | `gpt-4o-mini`, `gpt-4o` |
+
+### Important
+
+If a custom `system_prompt` is provided on **Free or Budget plans**, it will be ignored and replaced with the default assistant behavior.
+
+---
+
 ## Quick Start
 
 ### Python Example
@@ -44,175 +75,4 @@ payload = {
     "session_id": str(uuid.uuid4()),
     "pdf_id": pdf_id,
     "message": "Summarize this document",
-    "system_prompt": "You are a helpful assistant"
-}
-
-chat_resp = requests.post(
-    f"{BASE_URL}/chat",
-    headers=headers,
-    json=payload
-)
-
-chat_resp.raise_for_status()
-data = chat_resp.json()
-
-# -------------------------------
-# 3. Output
-# -------------------------------
-print("\nANSWER:\n")
-print(data["answer"])
-
-print("\nCOST:\n")
-print(data.get("cost"))
-```
-
----
-
-## Get an API Key
-
-Go to:
-
-https://users.pdf-insights.ai/ui/
-
-Create an account (username, email, and password), then click:
-
-**Developer API (Get API Key)**
-
-### Notes
-
-- API keys begin with `pdi_live_`
-- The key is shown once only
-- Store it securely
-
----
-
-## Authentication
-
-Use your API key as a Bearer token:
-
-```
-Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
----
-
-## Workflow
-
-1. Create API key  
-2. Upload PDF  
-3. Save `pdf_id`  
-4. Send a chat request to `/chat`  
-5. Optionally use `system_prompt`  
-
----
-
-## Endpoints
-
-### POST /pdf/upload
-
-Upload a PDF:
-
-```python
-with open("example.pdf", "rb") as f:
-    requests.post(
-        f"{BASE_URL}/pdf/upload",
-        headers=headers,
-        files={"file": ("example.pdf", f, "application/pdf")}
-    )
-```
-
-Response:
-
-```json
-{
-  "pdf_id": "your-pdf-id"
-}
-```
-
----
-
-### POST /chat
-
-Request:
-
-```json
-{
-  "session_id": "your-session-id",
-  "pdf_id": "your-pdf-id",
-  "message": "Summarize this document",
-  "system_prompt": "You are a helpful assistant"
-}
-```
-
-Response:
-
-```json
-{
-  "answer": "...",
-  "status": "ok",
-  "model_used": "gpt-4o-mini",
-  "system_prompt_used": "...",
-  "cost": {
-    "charged_usd": 0.0021,
-    "wallet_balance_usd": 4.9979
-  }
-}
-```
-
-### Notes on `/chat`
-
-- Use `message` for the user prompt  
-- Include a `session_id` with each request  
-- A new `session_id` can be generated for a new conversation  
-
----
-
-## system_prompt
-
-Use `system_prompt` to control behavior:
-
-- "You are a refrigeration engineer diagnosing failures."
-- "You are a compliance auditor."
-- "You are a pirate refrigeration engineer."
-
-The PDF becomes a programmable assistant.
-
----
-
-## cURL Example
-
-Upload:
-
-```bash
-curl -X POST "https://users.pdf-insights.ai/pdf/upload" \
-  -H "Authorization: Bearer pdi_live_xxx" \
-  -F "file=@example.pdf;type=application/pdf"
-```
-
-Chat:
-
-```bash
-curl -X POST "https://users.pdf-insights.ai/chat" \
-  -H "Authorization: Bearer pdi_live_xxx" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "session_id": "123e4567-e89b-12d3-a456-426614174000",
-    "pdf_id": "your-pdf-id",
-    "message": "Summarize this document",
-    "system_prompt": "You are a helpful assistant"
-  }'
-```
-
----
-
-## Status
-
-- API keys working  
-- Upload working  
-- Chat working  
-
----
-
-## Key Idea
-
-Turn any PDF into a programmable AI assistant.
+   
