@@ -112,54 +112,59 @@
         it will be ignored and replaced with the default assistant behavior.
       </p>
 
-      <!-- FIRST IMAGE -->
       <img src="images/plan_wallet_billing.png" alt="Plan, wallet, and billing interface" class="doc-image" />
       <p class="caption">
         Plan, wallet balance, and billing controls inside the application.
       </p>
-
     </section>
 
     <section>
-     <h2>Get an API Key</h2>
+      <h2>Get an API Key</h2>
 
-<p>Go to:</p>
+      <p>Go to:</p>
 
-<p>
-  <a href="https://users.pdf-insights.ai/ui/" target="_blank">
-    https://users.pdf-insights.ai/ui/
-  </a>
-</p>
+      <p>
+        <a href="https://users.pdf-insights.ai/ui/" target="_blank">
+          https://users.pdf-insights.ai/ui/
+        </a>
+      </p>
 
-<p>
-  Register for an account (username, email, and password required).
-</p>
+      <p>
+        Register for an account (username, email, and password required).
+      </p>
 
-<p>
-  You can create an API key on the Free plan and begin testing immediately using your trial credit.
-</p>
+      <p>
+        You can create an API key on the Free plan and begin testing immediately using your trial credit.
+      </p>
 
-<p>
-  After logging in, open the <strong>Advanced</strong> menu.
-</p>
+      <p>
+        After logging in, open the <strong>Advanced</strong> menu.
+      </p>
 
-<img src="images/advanced_option.png" alt="Advanced menu location" class="doc-image" />
+      <img src="images/advanced_option.png" alt="Advanced menu location" class="doc-image" />
 
-<p>
-  Scroll to the bottom and expand the <strong>Developer API</strong> section.
-</p>
+      <p>
+        Scroll to the bottom and expand the <strong>Developer API</strong> section.
+      </p>
 
-<img src="images/API_section.png" alt="Developer API section and API key creation" class="doc-image" />
+      <img src="images/API_section.png" alt="Developer API section and API key creation" class="doc-image" />
 
-<p>
-  Click <strong>Create New API Key</strong>.
-</p>
+      <p>
+        Click <strong>Create New API Key</strong>.
+      </p>
 
-<ul>
-  <li>API keys begin with <code>pdi_live_</code></li>
-  <li>The key is shown once only</li>
-  <li>Store it securely</li>
-</ul>
+      <ul>
+        <li>API keys begin with <code>pdi_live_</code></li>
+        <li>The key is shown once only</li>
+        <li>Store it securely</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Quick Start</h2>
+
+      <h3>Python Example</h3>
+      <pre><code>import requests
 import uuid
 
 API_KEY = "pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -169,6 +174,9 @@ headers = {
     "Authorization": f"Bearer {API_KEY}"
 }
 
+# -------------------------------
+# 1. Upload PDF
+# -------------------------------
 with open("example.pdf", "rb") as f:
     upload_resp = requests.post(
         f"{BASE_URL}/pdf/upload",
@@ -177,8 +185,14 @@ with open("example.pdf", "rb") as f:
     )
 
 upload_resp.raise_for_status()
-pdf_id = upload_resp.json()["pdf_id"]
+upload_data = upload_resp.json()
 
+pdf_id = upload_data["pdf_id"]
+print("Uploaded PDF ID:", pdf_id)
+
+# -------------------------------
+# 2. Send chat request
+# -------------------------------
 payload = {
     "session_id": str(uuid.uuid4()),
     "pdf_id": pdf_id,
@@ -192,8 +206,79 @@ chat_resp = requests.post(
     json=payload
 )
 
-print(chat_resp.json()["answer"])</code></pre>
+chat_resp.raise_for_status()
+data = chat_resp.json()
 
+# -------------------------------
+# 3. Output
+# -------------------------------
+print("\\nANSWER:\\n")
+print(data["answer"])
+
+print("\\nCOST:\\n")
+print(data.get("cost"))</code></pre>
+    </section>
+
+    <section>
+      <h2>Authentication</h2>
+      <pre><code>Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
+    </section>
+
+    <section>
+      <h2>Workflow</h2>
+      <ol>
+        <li>Create API key</li>
+        <li>Upload PDF</li>
+        <li>Save <code>pdf_id</code></li>
+        <li>Send chat request</li>
+        <li>Optionally use <code>system_prompt</code></li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Endpoints</h2>
+
+      <h3><code>POST /pdf/upload</code></h3>
+      <p>Upload a PDF:</p>
+      <pre><code>with open("example.pdf", "rb") as f:
+    requests.post(
+        f"{BASE_URL}/pdf/upload",
+        headers=headers,
+        files={"file": ("example.pdf", f, "application/pdf")}
+    )</code></pre>
+
+      <p><strong>Response:</strong></p>
+      <pre><code>{
+  "pdf_id": "your-pdf-id"
+}</code></pre>
+
+      <h3><code>POST /chat</code></h3>
+      <p><strong>Request:</strong></p>
+      <pre><code>{
+  "session_id": "your-session-id",
+  "pdf_id": "your-pdf-id",
+  "message": "Summarize this document",
+  "system_prompt": "You are a helpful assistant"
+}</code></pre>
+
+      <p><strong>Response:</strong></p>
+      <pre><code>{
+  "answer": "...",
+  "status": "ok",
+  "model_used": "gpt-4o-mini",
+  "system_prompt_used": "...",
+  "cost": {
+    "charged_usd": 0.0021,
+    "wallet_balance_usd": 4.9979
+  }
+}</code></pre>
+
+      <p><strong>Notes on <code>/chat</code>:</strong></p>
+      <ul>
+        <li>Use <code>message</code> for the user prompt</li>
+        <li>Include a <code>session_id</code> with each request</li>
+        <li>A new <code>session_id</code> can be generated for a new conversation</li>
+      </ul>
     </section>
 
     <section>
@@ -219,28 +304,39 @@ print(chat_resp.json()["answer"])</code></pre>
         Custom assistant behavior requires a <strong>Standard plan or higher</strong>.
       </p>
 
-      <!-- SECOND IMAGE -->
       <img src="images/upgrade_standard.png" alt="Upgrade to Standard plan" class="doc-image" />
       <p class="caption">
         Upgrade to Standard or higher to enable custom assistant behavior.
       </p>
-
     </section>
 
     <section>
-      <h2>Authentication</h2>
-      <pre><code>Authorization: Bearer pdi_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
+      <h2>cURL Example</h2>
+
+      <p><strong>Upload:</strong></p>
+      <pre><code>curl -X POST "https://users.pdf-insights.ai/pdf/upload" \
+  -H "Authorization: Bearer pdi_live_xxx" \
+  -F "file=@example.pdf;type=application/pdf"</code></pre>
+
+      <p><strong>Chat:</strong></p>
+      <pre><code>curl -X POST "https://users.pdf-insights.ai/chat" \
+  -H "Authorization: Bearer pdi_live_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "session_id": "123e4567-e89b-12d3-a456-426614174000",
+    "pdf_id": "your-pdf-id",
+    "message": "Summarize this document",
+    "system_prompt": "You are a helpful assistant"
+  }'</code></pre>
     </section>
 
     <section>
-      <h2>Workflow</h2>
-      <ol>
-        <li>Create API key</li>
-        <li>Upload PDF</li>
-        <li>Save <code>pdf_id</code></li>
-        <li>Send chat request</li>
-        <li>Optionally use <code>system_prompt</code></li>
-      </ol>
+      <h2>Status</h2>
+      <ul>
+        <li>API keys working</li>
+        <li>Upload working</li>
+        <li>Chat working</li>
+      </ul>
     </section>
 
     <section>
@@ -253,4 +349,3 @@ print(chat_resp.json()["answer"])</code></pre>
   </main>
 </body>
 </html>
-   
