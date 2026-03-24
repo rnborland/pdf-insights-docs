@@ -132,7 +132,52 @@ def structure_transcript_text(raw_text: str) -> str:
 
 
 
-def create_transcript_pdf(transcript_text: str, title: str = "Transcript", source_note: str = "") -> str:
+def _safe_pdf_text(text: str) -> str:
+    """
+    Normalize text so the basic PDF font can handle it reliably.
+    """
+    if not text:
+        return ""
+
+    # Normalize common unicode punctuation to plain ASCII
+    replacements = {
+        "\u2018": "'",   # left single quote
+        "\u2019": "'",   # right single quote
+        "\u201c": '"',   # left double quote
+        "\u201d": '"',   # right double quote
+        "\u2013": "-",   # en dash
+        "\u2014": "-",   # em dash
+        "\u2026": "...", # ellipsis
+        "\xa0": " ",     # non-breaking space
+    }
+
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+
+    # Collapse weird whitespace but preserve paragraph breaks
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+
+    # Latin-1 safe fallback for built-in fonts
+    text = text.encode("latin-1", "replace").decode("latin-1")
+
+    return text.strip()
+
+
+def create_transcript_pdf(
+    transcript_text: str,
+    title: str = "Transcript",
+    source_note: str = ""
+) -> str:
+    """
+    Create a simple readable PDF from transcript text.
+    Returns the path to the generated PDF file.
+    """
+    transcript_text = _safe_pdf_text(transcript_text)
+    title = _safe_pdf_text(title)
+    source_note = _safe_pdf_text(source_note)
+
     if not transcript_text.strip():
         raise ValueError("Transcript text is empty.")
 
@@ -140,32 +185,40 @@ def create_transcript_pdf(transcript_text: str, title: str = "Transcript", sourc
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
+    left_margin = 15
+    right_margin = 15
+    usable_width = 210 - left_margin - right_margin  # A4 width assumptions
+    pdf.set_left_margin(left_margin)
+    pdf.set_right_margin(right_margin)
+
+    # Title
     pdf.set_font("Helvetica", "B", 16)
-    pdf.multi_cell(0, 10, title)
+    pdf.set_x(left_margin)
+    pdf.multi_cell(usable_width, 10, title)
     pdf.ln(2)
 
+    # Optional source note
     if source_note.strip():
         pdf.set_font("Helvetica", "", 10)
-        pdf.multi_cell(0, 6, source_note)
-        pdf.ln(4)
+        pdf.set_x(left_margin)
+        pdf.multi_cell(usable_width, 6, source_note)
+        pdf.ln(3)
 
+    # Body
     pdf.set_font("Helvetica", "", 11)
 
-    paragraphs = [p.strip() for p in transcript_text.split("\n") if p.strip()]
+    paragraphs = [p.strip() for p in transcript_text.split("\n\n") if p.strip()]
+    if not paragraphs:
+        paragraphs = [transcript_text]
+
     for para in paragraphs:
-        wrapped = textwrap.wrap(para, width=100)
-        for line in wrapped:
-            pdf.multi_cell(0, 6, line)
+        pdf.set_x(left_margin)
+        pdf.multi_cell(usable_width, 6, para)
         pdf.ln(2)
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpf:
-        output_path = tmpf.name
-
-    pdf.output(output_path)
-    return output_path
-
-
-
+        pdf.output(tmpf.name)
+        return tmpf.name
 def upload_pdf(api_key: str, pdf_path: str, filename: str) -> tuple[bool, str]:
     headers = {"Authorization": f"Bearer {api_key}"}
 
@@ -476,4 +529,3 @@ Examples:
 
 This example is designed as a quick-start reference implementation and front-end demo, not a production deployment.
 """
-    )
