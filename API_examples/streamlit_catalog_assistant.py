@@ -268,8 +268,11 @@ if ask_clicked:
                     "question": question.strip(),
                     "answer": result
                 })
-                st.session_state.question_box = ""
-                st.rerun()
+
+                # clear input safely BEFORE rerun
+                st.session_state["question_box"] = ""
+
+    st.rerun()
             else:
                 st.error(result)
 
