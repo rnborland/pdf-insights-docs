@@ -234,6 +234,10 @@ for i in range(0, len(example_prompts), 2):
 # -----------------------------
 st.subheader("3) Ask the assistant")
 
+if st.session_state.get("_clear_question"):
+    st.session_state["question_box"] = ""
+    st.session_state["_clear_question"] = False
+
 question = st.text_area(
     "Your question",
     key="question_box",
@@ -269,16 +273,15 @@ if ask_clicked:
                     "answer": result
                 })
 
-                # clear input safely BEFORE rerun
-                st.session_state["question_box"] = ""
+                # safe clear using flag
+                st.session_state["_clear_question"] = True
+                st.rerun()
 
-    st.rerun()
             else:
                 st.error(result)
 
         except Exception as e:
             st.error(f"Chat error: {e}")
-
 # -----------------------------
 # Conversation display
 # -----------------------------
