@@ -528,4 +528,6 @@ Examples:
 - **Technical Interview Assistant** — extract important technical details and follow-up questions
 
 This example is designed as a quick-start reference implementation and front-end demo, not a production deployment.
-"""
+""" 
+
+    )
