@@ -1,6 +1,6 @@
 # PDF-Insights Developer API
 
-Turn any PDF into a programmable AI assistant.
+Turn any PDF into a programmable AI assistant — with real-time cost tracking.
 
 Upload a document, send chat-style prompts, control behavior with system prompts, and get structured answers.
 
