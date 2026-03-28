@@ -1,8 +1,25 @@
 # PDF-Insights Developer API
 
-Turn any PDF into a programmable AI assistant — with real-time cost tracking.
+Turn any PDF into a programmable AI assistant — with built-in cost tracking.
 
 Upload a document, send chat-style prompts, control behavior with system prompts, and get structured answers.
+
+**No RAG pipeline required. No cost guesswork.**
+
+---
+
+## Why This Exists
+
+Most tools handle retrieval.
+
+This API handles the full pipeline:
+
+- Document querying (RAG)
+- LLM reasoning (chat-style responses)
+- Real-time token cost tracking
+- Multi-user usage tracking (session-based)
+
+Build AI features without rebuilding the backend every time.
 
 ---
 
@@ -14,7 +31,7 @@ Every account includes a **$1 free wallet credit**.
 - Full API access available  
 - Test real queries immediately  
 
-Build and test your integration before spending anything.
+Build and validate your integration before spending anything.
 
 ---
 
@@ -75,4 +92,4 @@ payload = {
     "session_id": str(uuid.uuid4()),
     "pdf_id": pdf_id,
     "message": "Summarize this document",
-   
+}
