@@ -157,20 +157,31 @@ chat_data = chat_resp.json()
 
 print("\nChat response:")
 print(chat_data.get("answer", chat_data))
-Using Your Own PDF
+```
+
+## Using Your Own PDF
 
 Place your PDF in the same folder as the script and rename it:
-
+```markdown
 example.pdf
-
-Or modify this line:
-
+```
+Or modify these lines:
+```markdown
 with open("example.pdf", "rb") as f:
-
+```
+and 
+```markdown
+files={"file": ("example.pdf", f, "application/pdf")}
+```
 Example:
-
+```markdown
 with open("my_catalog.pdf", "rb") as f:
-What This Script Does
+```
+and
+```markdown
+files={"file": ("my_catalog.pdf", f, "application/pdf")}
+```
+## What This Script Does
 Uploads your PDF
 Returns a pdf_id
 Sends a chat request
